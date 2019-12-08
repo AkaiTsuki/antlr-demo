@@ -5,6 +5,8 @@ import io.akaitsuki.grammars.arrayinit.ArrayInitLexer;
 import io.akaitsuki.grammars.arrayinit.ArrayInitParser;
 import io.akaitsuki.grammars.java.Java8Lexer;
 import io.akaitsuki.grammars.java.Java8Parser;
+import io.akaitsuki.grammars.myquery.MyQueryLexer;
+import io.akaitsuki.grammars.myquery.MyQueryParser;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -12,7 +14,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class Main {
     public static void main(String[] args) {
-        testArrayInitParser();
+        testMyQuery();
     }
 
     private static void testArrayInitParser() {
@@ -38,5 +40,30 @@ public class Main {
         walker.walk(listener, tree);
 
         System.out.println(listener.getErrors());
+    }
+
+    private static void testMyQuery() {
+        String query = "{\n" +
+                "    \"select\": [\"pid\", \"pv_sum\"],\n" +
+                "    \"from\":\"ads_pid_effect\",\n" +
+                "    \"where\": [\n" +
+                "        {\n" +
+                "            \"key\": \"media\",\n" +
+                "            \"value\": \"360\",\n" +
+                "            \"op\": \"=\"\n" +
+                "        },{\n" +
+                "            \"key\": \"pv\",\n" +
+                "            \"value\": \"0\",\n" +
+                "            \"op\" : \">=\"\n" +
+                "        }\n" +
+                "    ],\n" +
+                "    \"groupBy\": [\"pid\"]\n" +
+                "}";
+        System.out.println(query);
+        MyQueryLexer lexer = new MyQueryLexer(CharStreams.fromString(query));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        MyQueryParser parser = new MyQueryParser(tokens);
+        ParseTree tree = parser.query();
+        System.out.println(tree.toStringTree(parser));
     }
 }
