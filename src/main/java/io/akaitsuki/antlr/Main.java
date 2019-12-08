@@ -7,8 +7,7 @@ import io.akaitsuki.grammars.java.Java8Lexer;
 import io.akaitsuki.grammars.java.Java8Parser;
 import io.akaitsuki.grammars.myquery.MyQueryLexer;
 import io.akaitsuki.grammars.myquery.MyQueryParser;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
@@ -63,6 +62,12 @@ public class Main {
         MyQueryLexer lexer = new MyQueryLexer(CharStreams.fromString(query));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         MyQueryParser parser = new MyQueryParser(tokens);
+        parser.addErrorListener(new BaseErrorListener() {
+            @Override
+            public void syntaxError(Recognizer<?, ?> recognizer, Object o, int i, int i1, String s, RecognitionException e) {
+                throw new RuntimeException(e);
+            }
+        });
         ParseTree tree = parser.query();
         System.out.println(tree.toStringTree(parser));
     }
