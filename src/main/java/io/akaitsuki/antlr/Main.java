@@ -20,7 +20,7 @@ public class Main {
         String c2 = "{1, {2,3}, 5}";
         String c3 = "{1, {2.3}, 5}";
 
-        ArrayInitLexer lexer = new ArrayInitLexer(CharStreams.fromString(c2));
+        ArrayInitLexer lexer = new ArrayInitLexer(CharStreams.fromString(c3));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         ArrayInitParser parser = new ArrayInitParser(tokens);
         ParseTree tree = parser.init();
