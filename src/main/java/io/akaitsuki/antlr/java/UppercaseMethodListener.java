@@ -1,7 +1,7 @@
-package io.akaitsuki.antlr;
+package io.akaitsuki.antlr.java;
 
-import io.akaitsuki.grammar.Java8BaseListener;
-import io.akaitsuki.grammar.Java8Parser;
+import io.akaitsuki.grammars.java.Java8BaseListener;
+import io.akaitsuki.grammars.java.Java8Parser;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;

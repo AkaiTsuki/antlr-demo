@@ -1,16 +1,33 @@
 package io.akaitsuki.antlr;
 
-import io.akaitsuki.grammar.Java8Lexer;
-import io.akaitsuki.grammar.Java8Parser;
+import io.akaitsuki.antlr.java.UppercaseMethodListener;
+import io.akaitsuki.grammars.arrayinit.ArrayInitLexer;
+import io.akaitsuki.grammars.arrayinit.ArrayInitParser;
+import io.akaitsuki.grammars.java.Java8Lexer;
+import io.akaitsuki.grammars.java.Java8Parser;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
-import static com.sun.org.apache.xerces.internal.util.PropertyState.is;
-
 public class Main {
     public static void main(String[] args) {
+        testArrayInitParser();
+    }
+
+    private static void testArrayInitParser() {
+        String c1 = "{1,2,3}";
+        String c2 = "{1, {2,3}, 5}";
+        String c3 = "{1, {2.3}, 5}";
+
+        ArrayInitLexer lexer = new ArrayInitLexer(CharStreams.fromString(c2));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        ArrayInitParser parser = new ArrayInitParser(tokens);
+        ParseTree tree = parser.init();
+        System.out.println(tree.toStringTree(parser));
+    }
+
+    private static void testJava8Parser() {
         String javaClassContent = "public class SampleClass { void DoSomething(){} }";
         Java8Lexer lexer = new Java8Lexer(CharStreams.fromString(javaClassContent));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -21,6 +38,5 @@ public class Main {
         walker.walk(listener, tree);
 
         System.out.println(listener.getErrors());
-
     }
 }
